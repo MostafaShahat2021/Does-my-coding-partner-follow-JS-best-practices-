@@ -1,4 +1,6 @@
 /* eslint-disable import/no-mutable-exports */
+import './style.css';
+
 const submit = document.querySelector('.add-btn');
 const tasksDiv = document.querySelector('.tasks');
 export const taskInput = document.querySelector('.add-task input');
