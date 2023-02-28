@@ -1,15 +1,20 @@
+/* eslint-disable import/prefer-default-export */
 /* eslint-disable import/no-mutable-exports */
 import './style.css';
 
 const submit = document.querySelector('.add-btn');
 const tasksDiv = document.querySelector('.tasks');
-export const taskInput = document.querySelector('.add-task input');
+const taskInput = document.querySelector('.add-task input');
 
 let editId;
 let isEditTask = false;
 let tasks = JSON.parse(localStorage.getItem('task-list'));
 
-export const addElemToPage = () => {
+const saveToLocalStorage = (arr) => {
+  localStorage.setItem('task-list', JSON.stringify(arr));
+};
+
+const addElemToPage = () => {
   let div = '';
   if (tasks) {
     tasks.forEach((task) => {
@@ -21,12 +26,18 @@ export const addElemToPage = () => {
       }
       div += `
       <div class='task' data-id='task.id'>        
-        <input id="${task.index}" class='checkbox' type="checkbox" onclick='updateStatus(this)'>
+        <input id="${
+  task.index
+}" class='checkbox' type="checkbox" onclick='updateStatus(this)'>
         <p id='${task.index}'class='text ${isCompleted}'>${task.descripton}</p>
         <button type="button"  id="${task.index}" class='edit' >
-        <span onclick='editTask(${task.index - 1}, "${task.descripton}")' class="material-symbols-outlined">edit</span>
+        <span onclick='editTask(${task.index - 1}, "${
+  task.descripton
+}")' class="material-symbols-outlined">edit</span>
         </button>
-        <button type="button"  id="${task.index}" class='del' onclick='del(${task.index})' >
+        <button type="button"  id="${task.index}" class='del' onclick='del(${
+  task.index
+})' >
         <span class='material-symbols-outlined del'>delete</span>
         </button>
         </div>
@@ -56,7 +67,7 @@ submit.addEventListener('click', () => {
   }
   taskInput.value = '';
   taskInput.focus();
-  localStorage.setItem('task-list', JSON.stringify(tasks));
+  saveToLocalStorage(tasks);
   addElemToPage();
 });
 
@@ -79,7 +90,7 @@ taskInput.addEventListener('keyup', (e) => {
       tasks[editId].descripton = userTask;
     }
     taskInput.value = '';
-    localStorage.setItem('task-list', JSON.stringify(tasks));
+    saveToLocalStorage(tasks);
     addElemToPage();
   }
 });
@@ -98,7 +109,7 @@ window.del = (id) => {
   tasks.forEach((e, i) => {
     e.index = i + 1;
   });
-  localStorage.setItem('task-list', JSON.stringify(tasks));
+  saveToLocalStorage(tasks);
   addElemToPage();
 };
 
@@ -112,7 +123,7 @@ window.updateStatus = (selectedTask) => {
     taskName.classList.remove('checked');
     tasks[selectedTask.id - 1].completed = false;
   }
-  localStorage.setItem('task-list', JSON.stringify(tasks));
+  saveToLocalStorage(tasks);
 };
 
 // ======Clear Completed Function=======
@@ -123,6 +134,7 @@ clearCompletedBtn.addEventListener('click', () => {
   completed.forEach((e, i) => {
     e.index = i + 1;
   });
-  localStorage.setItem('task-list', JSON.stringify(completed));
+  //
+  saveToLocalStorage(completed);
   window.location.reload();
 });
